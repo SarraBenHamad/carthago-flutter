@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
+import 'services/destination_service.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final destinations = await DestinationService.charger();
+  debugPrint('Destinations chargées : ${destinations.length}');
   runApp(const MainApp());
 }
 

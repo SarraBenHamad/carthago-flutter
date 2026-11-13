@@ -1,0 +1,99 @@
+
+[
+  {
+    "id": "sidi-bou-said",
+    "nom": "Sidi Bou Saïd",
+    "ville": "Tunis",
+    "categorie": "Patrimoine",
+    "description": "Village blanc et bleu face à la mer, près de Tunis.",
+    "cout": 40
+  },
+  {
+    "id": "djerba",
+    "nom": "Île de Djerba",
+    "ville": "Djerba",
+    "categorie": "Plage",
+    "description": "Île aux plages de sable fin et aux marchés animés.",
+    "cout": 120
+  },
+  {
+    "id": "tozeur",
+    "nom": "Tozeur",
+    "ville": "Tozeur",
+    "categorie": "Désert",
+    "description": "Oasis aux portes du Sahara, entre palmeraies et dunes.",
+    "cout": 90
+  },
+  {
+    "id": "hammamet",
+    "nom": "Hammamet",
+    "ville": "Nabeul",
+    "categorie": "Plage",
+    "description": "Station balnéaire réputée pour ses plages et sa médina.",
+    "cout": 75
+  },
+  {
+    "id": "ichkeul",
+    "nom": "Parc national de l'Ichkeul",
+    "ville": "Bizerte",
+    "categorie": "Nature",
+    "description": "Parc naturel célèbre pour son lac et ses oiseaux migrateurs.",
+    "cout": 35
+  },
+  {
+    "id": "el-jem",
+    "nom": "Amphithéâtre d'El Jem",
+    "ville": "Mahdia",
+    "categorie": "Patrimoine",
+    "description": "Monument romain impressionnant classé au patrimoine mondial.",
+    "cout": 55
+  },
+  {
+    "id": "kairouan",
+    "nom": "Kairouan",
+    "ville": "Kairouan",
+    "categorie": "Patrimoine",
+    "description": "Ville historique connue pour sa grande mosquée et son patrimoine architectural.",
+    "cout": 25
+  },
+  {
+    "id": "douz",
+    "nom": "Douz",
+    "ville": "Kébili",
+    "categorie": "Désert",
+    "description": "Porte du Sahara connue pour ses excursions dans les dunes.",
+    "cout": 180
+  },
+  {
+    "id": "tabarka",
+    "nom": "Tabarka",
+    "ville": "Jendouba",
+    "categorie": "Nature",
+    "description": "Destination côtière connue pour ses forêts, ses rochers et ses fonds marins.",
+    "cout": 110
+  },
+  {
+    "id": "tunis-medina",
+    "nom": "Médina de Tunis",
+    "ville": "Tunis",
+    "categorie": "Ville",
+    "description": "Centre historique animé avec ses souks, ses ruelles et ses monuments.",
+    "cout": 20
+  },
+  {
+    "id": "sousse",
+    "nom": "Sousse",
+    "ville": "Sousse",
+    "categorie": "Ville",
+    "description": "Ville côtière mêlant médina historique, port et vie urbaine.",
+    "cout": 65
+  },
+  {
+    "id": "zembra",
+    "nom": "Archipel de Zembra",
+    "ville": "Nabeul",
+    "categorie": "Nature",
+    "description": "Réserve naturelle maritime réputée pour sa biodiversité et ses paysages sauvages.",
+    "cout": 250
+  }
+]
