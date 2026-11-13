@@ -11,4 +11,19 @@ class DestinationService {
         .map((e) => Destination.fromJson(e as Map<String, dynamic>))
         .toList();
   }
+
+  static List<Destination> filtrer(
+    List<Destination> toutes, {
+    String recherche = '',
+    String? categorie,
+  }) {
+    
+    toutes = toutes.where((dest) {
+      final nom = dest.nom.toLowerCase();
+      final rechercheMin = recherche.trim().toLowerCase();
+      final categorieOk = categorie == null || dest.categorie == categorie;
+      return nom.contains(rechercheMin) && categorieOk;
+    }).toList();
+    return toutes;
+  }
 }
