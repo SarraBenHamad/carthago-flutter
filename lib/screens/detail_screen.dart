@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../models/destination.dart';
 import '../models/programme.dart';
 import '../state/programme_state.dart';
+import '../widgets/destination_image.dart';
 import 'programme_screen.dart';
+
+const Size _tailleBouton = Size.fromHeight(52);
 
 class DetailScreen extends StatelessWidget {
   final Destination destination;
@@ -17,6 +20,7 @@ class DetailScreen extends StatelessWidget {
   void _ajouter(BuildContext context) {
     final resultat = etat.ajouter(destination);
     final restant = etat.programme!.budgetRestant.toStringAsFixed(0);
+    final ok = resultat == ResultatAjout.ok;
 
     String message;
     switch (resultat) {
@@ -33,12 +37,22 @@ class DetailScreen extends StatelessWidget {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: ok ? null : Theme.of(context).colorScheme.error,
+        content: Text(
+          message,
+          style: TextStyle(color: ok ? null : Colors.white),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final couleurs = theme.colorScheme;
+
     return ListenableBuilder(
       listenable: etat,
       builder: (context, _) {
@@ -47,65 +61,143 @@ class DetailScreen extends StatelessWidget {
 
         Widget action;
         if (programme == null) {
-          action = Column(
-            children: [
-              const Text(
-                'Crée d\'abord un programme avec un budget pour ajouter des destinations.',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              FilledButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProgrammeScreen(etat: etat),
-                    ),
-                  );
-                },
-                child: const Text('Créer mon programme'),
-              ),
-            ],
+          action = FilledButton.icon(
+            style: FilledButton.styleFrom(minimumSize: _tailleBouton),
+            icon: const Icon(Icons.luggage_rounded),
+            label: const Text('Créer mon programme'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProgrammeScreen(etat: etat)),
+              );
+            },
           );
         } else if (dejaAjoutee) {
-          action = OutlinedButton(
+          action = OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(minimumSize: _tailleBouton),
+            icon: const Icon(Icons.remove_circle_outline_rounded),
+            label: const Text('Retirer du programme'),
             onPressed: () => etat.retirer(destination),
-            child: const Text('Retirer du programme'),
           );
         } else {
-          action = FilledButton(
+          action = FilledButton.icon(
+            style: FilledButton.styleFrom(minimumSize: _tailleBouton),
+            icon: const Icon(Icons.add_rounded),
+            label: const Text('Ajouter au programme'),
             onPressed: () => _ajouter(context),
-            child: const Text('Ajouter au programme'),
           );
         }
 
         return Scaffold(
-          appBar: AppBar(title: Text(destination.nom)),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${destination.ville} · ${destination.categorie}',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 16),
-                Text(destination.description),
-                const SizedBox(height: 16),
-                Text(
-                  'Coût estimatif : ${destination.cout.toStringAsFixed(0)} TND',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                if (programme != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    'Budget restant : ${programme.budgetRestant.toStringAsFixed(0)} TND',
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 300,
+                foregroundColor: Colors.white,
+                backgroundColor: couleurs.primary,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    destination.nom,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
-                ],
-                const Spacer(),
-                SizedBox(width: double.infinity, child: action),
-              ],
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Hero(
+                        tag: 'img-${destination.id}',
+                        child: DestinationImage(id: destination.id),
+                      ),
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.black26, Colors.black54],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        spacing: 8,
+                        children: [
+                          Chip(
+                            avatar: const Icon(Icons.place_rounded, size: 18),
+                            label: Text(destination.ville),
+                          ),
+                          Chip(label: Text(destination.categorie)),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        destination.description,
+                        style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.payments_rounded, color: couleurs.primary),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Coût estimatif',
+                                    style: theme.textTheme.titleMedium,
+                                  ),
+                                  Text(
+                                    'Valeur indicative',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: couleurs.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              '${destination.cout.toStringAsFixed(0)} TND',
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: couleurs.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (programme != null) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          'Budget restant : '
+                          '${programme.budgetRestant.toStringAsFixed(0)} TND',
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+              child: action,
             ),
           ),
         );
